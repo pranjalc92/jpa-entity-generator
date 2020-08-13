@@ -64,13 +64,15 @@ tableExclusionRules:
 #   - array of ClassNameRule objects
 #     - tableName: table name (full name, case sensitive)
 #     - className: Java class name to be used (you cannot include package name in front of the class name)
+#     - prefixToRemove:  If a table prefix has to ignored while generating class name. If a table is named ARTICLE_PUBLISHED, with - prefixToRemove: "ARTICLE" it will create class Published
 classNameRules:
   - tableName: "article"
     className: "BlogArticle"
   - tableName: "article_tag"
     className: "BlogArticleTag"
-  - tableName: "abtest"
-    className: "ABTest"
+  - prefixToRemove: "ARTICLE"
+   
+    
 
 # ---------------------------------------------------------
 # *** Java interfaces to let generated classes implement ***
