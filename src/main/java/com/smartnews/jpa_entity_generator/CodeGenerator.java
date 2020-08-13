@@ -74,6 +74,7 @@ public class CodeGenerator {
             }
 
             String className = NameConverter.toClassName(table.getName(), config.getClassNameRules());
+
             data.setClassName(className);
             data.setTableName(table.getName());
 
@@ -81,8 +82,8 @@ public class CodeGenerator {
             Annotation entityAnnotation = Annotation.fromClassName("javax.persistence.Entity");
             AnnotationAttribute entityAnnotationValueAttr = new AnnotationAttribute();
             entityAnnotationValueAttr.setName("name");
-            entityAnnotationValueAttr.setValue("\"" + data.getPackageName() + "." + data.getClassName() + "\"");
-            entityAnnotation.getAttributes().add(entityAnnotationValueAttr);
+            entityAnnotationValueAttr.setValue("\"" + data.getClassName() + "\"");
+//            entityAnnotation.getAttributes().add(entityAnnotationValueAttr);
             entityClassAnnotationRule.setAnnotations(Arrays.asList(entityAnnotation));
             entityClassAnnotationRule.setClassName(className);
             config.getClassAnnotationRules().add(entityClassAnnotationRule);
@@ -199,9 +200,10 @@ public class CodeGenerator {
 
             orEmptyListIfNull(data.getImportRules()).sort(Comparator.comparing(ImportRule::getImportValue));
 
-            String code = CodeRenderer.render("entityGen/entity.ftl", data);
+            String code = CodeRenderer.render("entityGen/entityNew.ftl", data);
 
             String filepath = config.getOutputDirectory() + "/" + data.getPackageName().replaceAll("\\.", "/") + "/" + className + ".java";
+            System.out.println("File path" +filepath);
             Path path = Paths.get(filepath);
             if (!Files.exists(path)) {
                 Files.createFile(path);
@@ -229,11 +231,14 @@ public class CodeGenerator {
                         isScanTarget = false;
                         break;
                     }
+
                 }
                 if (isScanTarget) {
                     filteredTableNames.add(tableName);
                 }
             }
+            System.out.println("Filtered Tables " +  filteredTableNames);
+
             return filteredTableNames;
         } else {
             throw new IllegalStateException("Invalid value (" + tableScanMode + ") is specified for tableScanName");

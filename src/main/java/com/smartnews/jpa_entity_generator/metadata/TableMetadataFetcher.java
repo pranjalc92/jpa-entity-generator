@@ -11,10 +11,11 @@ import java.util.Optional;
 /**
  * Fetches metadata for all tables in a given database.
  */
+
 @Slf4j
 public class TableMetadataFetcher {
 
-    private static final String[] TABLE_TYPES = new String[]{"TABLE", "VIEW"};
+    private static final String[] TABLE_TYPES = new String[]{"TABLE"};
 
     private DatabaseMetaData getMetadata(JDBCSettings settings) throws SQLException {
         try {
@@ -29,6 +30,7 @@ public class TableMetadataFetcher {
 
     public List<String> getTableNames(JDBCSettings jdbcSettings) throws SQLException {
         DatabaseMetaData databaseMeta = getMetadata(jdbcSettings);
+        System.out.println("db url " + databaseMeta.getURL());
         try {
             List<String> tableNames = new ArrayList<>();
             try (ResultSet rs = databaseMeta.getTables(null,  jdbcSettings.getSchemaPattern(), "%", TABLE_TYPES)) {
@@ -47,7 +49,7 @@ public class TableMetadataFetcher {
         Table tableInfo = new Table();
 
         String schema = extractSchema(schemaAndTable);
-        String table = extractTabeName(schemaAndTable);
+        String table = extractTableName(schemaAndTable);
         tableInfo.setName(table);
         tableInfo.setSchema(Optional.ofNullable(schema));
         DatabaseMetaData databaseMeta = getMetadata(jdbcSettings);
@@ -126,15 +128,16 @@ public class TableMetadataFetcher {
 
     private static String extractSchema(String schemaAndTable) {
         if (schemaAndTable.contains(".")) {
-            return schemaAndTable.split(".")[0];
+
+            return schemaAndTable.split("\\.")[0];
         } else {
             return null;
         }
     }
 
-    private static String extractTabeName(String schemaAndTable) {
+    private static String extractTableName(String schemaAndTable) {
         if (schemaAndTable.contains(".")) {
-            return schemaAndTable.split(".")[1];
+            return schemaAndTable.split("\\.")[1];
         } else {
             return schemaAndTable;
         }

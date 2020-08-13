@@ -15,12 +15,19 @@ public class NameConverter {
 
     public static String toClassName(String tableName, List<ClassNameRule> rules) {
         for (ClassNameRule rule : rules) {
-            if (rule.getTableName().equals(tableName)) {
+
+            if (rule.getTableName() != null && rule.getTableName().matches(tableName)) {
                 return rule.getClassName();
             }
+
+            if(rule.getPrefixToRemove() != null)
+                return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName.replace(rule.getPrefixToRemove(),""));
+
         }
         return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName);
     }
+
+
 
     public static String toFieldName(String tableName) {
         return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, tableName);

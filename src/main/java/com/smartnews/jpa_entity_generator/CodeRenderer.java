@@ -32,6 +32,7 @@ public class CodeRenderer {
         try (InputStream is = ResourceReader.getResourceAsStream(templatePath);
              BufferedReader buffer = new BufferedReader(new InputStreamReader(is))) {
             source = buffer.lines().collect(Collectors.joining("\n"));
+//            System.out.println("Source   "+ source);
         }
         templateLoader.putTemplate("template", source);
         config.setTemplateLoader(templateLoader);
@@ -82,6 +83,10 @@ public class CodeRenderer {
             private boolean primitive;
             private String generatedValueStrategy;
             private List<Annotation> annotations = new ArrayList<>();
+
+            public String getColumnName() {
+                return columnName;
+            }
         }
     }
 }

@@ -139,6 +139,8 @@ public class CodeGeneratorConfig implements Serializable {
     private List<ImportRule> importRules = new ArrayList<>();
 
     private List<ClassNameRule> classNameRules = new ArrayList<>();
+    private List<ClassPrefixRemoveRule> classPrefixRemoveRules = new ArrayList<>();
+
     private List<ClassAnnotationRule> classAnnotationRules = new ArrayList<>();
     private List<InterfaceRule> interfaceRules = new ArrayList<>();
     private List<ClassAdditionalCommentRule> classAdditionalCommentRules = new ArrayList<>();

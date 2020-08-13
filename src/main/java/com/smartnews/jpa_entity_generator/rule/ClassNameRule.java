@@ -12,4 +12,6 @@ public class ClassNameRule implements Serializable {
 
     private String tableName;
     private String className;
+
+    private String prefixToRemove;
 }
